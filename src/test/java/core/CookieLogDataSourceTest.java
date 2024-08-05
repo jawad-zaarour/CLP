@@ -3,7 +3,7 @@ package core;
 import dev.profitisle.core.CookieLogFileDataReader;
 import dev.profitisle.domains.Cookie;
 import dev.profitisle.domains.CookieLog;
-import dev.profitisle.utilities.LogCreator;
+import utilities.LogCreator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

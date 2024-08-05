@@ -65,7 +65,7 @@ public class ClpMainTest implements CliTests {
 
         // Check the error output
         String errorOutput = errContent.toString().trim();
-        String expectedErrorMessage = "File not found: " + FILE_NOT_EXIST;
+        String expectedErrorMessage = "File not found: src\\test\\resources\\no_exist_file.csv";
 
         assertEquals(expectedErrorMessage, errorOutput);
     }

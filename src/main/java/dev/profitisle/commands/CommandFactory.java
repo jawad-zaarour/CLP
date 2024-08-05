@@ -2,8 +2,11 @@ package dev.profitisle.commands;
 
 import dev.profitisle.cli.CliParams;
 import dev.profitisle.core.CookieLogCommand;
+import dev.profitisle.core.CookieLogFileDataReader;
+import dev.profitisle.core.CookieLogProcessor;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import static dev.profitisle.commands.CommandType.*;
 
@@ -14,22 +17,18 @@ import static dev.profitisle.commands.CommandType.*;
  */
 public class CommandFactory {
 
-    private static final Map<CommandType, CommandInitializer> COMMAND_FACTORY_MAP = Map.of(
-            COOKIE, CookieLogCommand::new,
-            HELP, HelpCommand::new
+    private static final Map<CommandType, Function<Object[], Command>> COMMAND_FACTORY_MAP = Map.of(
+            COOKIE, args -> new CookieLogCommand((CookieLogFileDataReader) args[0], (CookieLogProcessor) args[1]),
+            HELP, args -> new HelpCommand((CliParams) args[0])
     );
 
     private CommandFactory() {
     }
 
-    public static Command create(CommandType type, CliParams cliParams) {
+    public static Command create(CommandType type, Object... args) {
         if (COMMAND_FACTORY_MAP.containsKey(type)) {
-            return COMMAND_FACTORY_MAP.get(type).initialize(cliParams);
+            return COMMAND_FACTORY_MAP.get(type).apply(args);
         }
-        throw new UnsupportedOperationException();
-    }
-
-    private interface CommandInitializer {
-        Command initialize(CliParams cliParams);
+        throw new UnsupportedOperationException("Unsupported command type: " + type);
     }
 }

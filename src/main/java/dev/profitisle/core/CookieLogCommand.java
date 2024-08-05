@@ -1,6 +1,5 @@
 package dev.profitisle.core;
 
-import dev.profitisle.cli.CliParams;
 import dev.profitisle.commands.Command;
 import dev.profitisle.domains.CookieLog;
 import dev.profitisle.exceptions.handlers.CookieLogHandler;
@@ -8,28 +7,29 @@ import dev.profitisle.exceptions.handlers.CookieLogHandler;
 import java.util.List;
 
 /**
- * * @author Jawad Zaarour
+ * Command class for processing cookie logs.
+ *
+ * @author Jawad Zaarour
  */
 public class CookieLogCommand implements Command {
-    private final CliParams cliParams;
 
-    public CookieLogCommand(CliParams cliParams) {
-        this.cliParams = cliParams;
+    private final DataReader<CookieLog> reader;
+    private final DataProcessor<CookieLog, List<String>> processor;
+
+    public CookieLogCommand(DataReader<CookieLog> reader, DataProcessor<CookieLog, List<String>> processor) {
+        this.reader = reader;
+        this.processor = processor;
     }
 
     @Override
     public void execute() {
         try {
-            var dataSource = new CookieLogFileDataReader(cliParams);
-            CookieLog log = dataSource.get();
-
-            var processor = new CookieLogProcessor();
-            List<String> mostActiveCookies = processor.process(log);
+            List<String> mostActiveCookies = processor.process(reader.get());
 
             // Print the most active cookies
             mostActiveCookies.forEach(System.out::println);
         } catch (Exception e) {
-            new CookieLogHandler(cliParams).handle(e);
+            new CookieLogHandler().handle(e);
         }
     }
 }
