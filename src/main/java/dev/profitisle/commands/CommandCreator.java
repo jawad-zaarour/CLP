@@ -1,9 +1,8 @@
 package dev.profitisle.commands;
 
 import dev.profitisle.cli.CliParams;
-import dev.profitisle.commands.Command;
-import dev.profitisle.commands.CommandFactory;
-import dev.profitisle.commands.CommandType;
+import dev.profitisle.core.CookieLogFileDataReader;
+import dev.profitisle.core.CookieLogProcessor;
 
 /**
  *
@@ -19,7 +18,7 @@ public class CommandCreator {
         if (cliParams.help()) {
             return CommandFactory.create(CommandType.HELP, cliParams);
         } else {
-            return CommandFactory.create(CommandType.COOKIE, cliParams);
+            return CommandFactory.create(CommandType.COOKIE, new CookieLogFileDataReader(cliParams), new CookieLogProcessor());
         }
     }
 }

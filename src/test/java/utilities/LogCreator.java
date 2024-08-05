@@ -1,4 +1,4 @@
-package dev.profitisle.utilities;
+package utilities;
 
 import dev.profitisle.cli.CliParams;
 import dev.profitisle.core.CookieLogFileDataReader;
